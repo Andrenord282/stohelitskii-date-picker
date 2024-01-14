@@ -3,8 +3,9 @@ import { useDatePickerState } from './hooks/useDateInputState';
 import { useSetStyleInDatePicker } from './hooks/useSetStyleInDatePicker';
 import { DateInput } from './components/DateInput';
 import { Calendar } from './components/Calendar';
+import { styleOptions } from './types';
 
-import './styles/DatePickerTheme.scss';
+import './styles/DatePickerVar.scss';
 import './styles/DatePicker.scss';
 
 type DatePickerTheme = 'dark' | 'light';
@@ -13,12 +14,14 @@ type DatePickerProps = {
     label: string;
     placeholder: string;
     theme?: DatePickerTheme;
+    styleOptions?: styleOptions;
 };
 
 const DatePicker = (props: DatePickerProps) => {
-    const { label, placeholder, theme = 'dark' } = props;
+    const { label, placeholder, styleOptions, theme = 'dark' } = props;
     const datePickerRef = useRef(null);
-    useSetStyleInDatePicker({ datePickerRef });
+    useSetStyleInDatePicker({ datePickerRef, styleOptions });
+
     const { calendarToggle, onClickToggleCalendar } = useDatePickerState();
 
     return (
