@@ -1,0 +1,15 @@
+.date-picker {
+    position: relative;
+    background-color: var(--date-picker-primary-bg-color);
+    color: var(--date-picker-primary-color);
+    font-size: var(--date-picker-primary-text-start-em);
+}
+
+.date-picker__input {
+}
+
+.date-picker__calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+}

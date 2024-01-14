@@ -1,0 +1,22 @@
+.date-picker {
+    --date-picker-text-xl-size: 22px;
+    --date-picker-text-l-size: 20px;
+    --date-picker-text-m-size: 18px;
+    --date-picker-text-s-size: 16px;
+    --date-picker-text-es-size: 1.125em;
+}
+
+.date-picker_dark {
+    --date-picker-primary-bg-color: #1e252b;
+    --date-picker-secondary-bg-color: #262d34;
+    --date-picker-primary-color: #ff571a;
+    --date-picker-secondary-color: #ff4400;
+    --date-picker-tertiary-color: #e0e0e0;
+}
+
+.date-picker_light {
+    --date-picker-primary-bg-color: #f9f9f9;
+    --date-picker-primary-color: #ff571a;
+    --date-picker-secondary-color: #ff4400;
+    --date-picker-tertiary-color: #424242;
+}
