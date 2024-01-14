@@ -3,16 +3,13 @@
 }
 
 .date-input__input {
-    width: 7em;
+    width: 7.5em;
     font-size: var(--date-picker-text-m-size);
     color: var(--date-picker-primary-color);
     padding: 0.3em 1.5em 0.3em 0.3em;
-    border: none;
+    border: 1px solid transparent;
     background-color: var(--date-picker-secondary-bg-color);
-
-    &::placeholder {
-        // font-size: var(--date-picker-text-m-size);
-    }
+    transition: all 0.2s linear;
 
     &:focus {
         outline: 1px solid var(--date-picker-secondary-color);
@@ -20,8 +17,9 @@
 }
 
 .date-input__toggle-btn {
+    cursor: pointer;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     position: absolute;
     top: 50%;
@@ -29,11 +27,11 @@
     transform: translateY(-50%);
     z-index: 2;
     color: var(--date-picker-primary-color);
-    font-size: var(--date-picker-primary-text-size);
-    cursor: pointer;
+    font-size: var(--date-picker-text-m-size);
     background-color: transparent;
-    border: none;
     border-radius: 2px;
+    background-color: var(--date-picker-secondary-bg-color);
+    transition: all 0.2s linear;
 
     &:focus {
         outline: 1px solid var(--date-picker-secondary-color);
@@ -41,6 +39,7 @@
 }
 
 .date-input__toggle-btn-icon {
+    display: block;
     width: 100%;
     height: 100%;
 }
