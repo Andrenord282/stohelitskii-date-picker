@@ -8,8 +8,9 @@
 .date-picker__input {
 }
 
-.date-picker__calendar {
+.date-picker__body {
     position: absolute;
     top: 100%;
     left: 0;
+    background-color: var(--date-picker-primary-bg-color);
 }

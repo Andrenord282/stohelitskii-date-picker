@@ -1,0 +1,22 @@
+.navigation-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigation-bar__nav-item {
+    display: flex;
+    align-items: center;
+}
+.navigation-bar__nav-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--date-picker-primary-color);
+}
+
+.navigation-bar__nav-btn-icon {
+}
+.navigation-bar__date {
+}

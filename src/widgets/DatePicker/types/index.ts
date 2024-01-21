@@ -10,3 +10,28 @@ export type styleOptions = {
     ['secondary-color']?: string;
     ['tertiary-color']?: string;
 };
+
+export type Location = 'ru-RU' | 'es-ES' | 'en-EN';
+
+export type DateOptions = {
+    location: Location;
+    day: 'numeric' | '2-digit';
+    month: 'numeric' | '2-digit' | 'long' | 'short';
+    year: 'numeric' | '2-digit';
+    weekday: 'long' | 'short' | 'narrow';
+    firstWeekDay: 'sunday' | 'monday';
+};
+
+export type DateData = {
+    year: number;
+    month: number;
+    day: number;
+    text: string;
+    formatter: Intl.DateTimeFormat;
+};
+
+export type DayList = {
+    dayListPrevMonth: number[];
+    dayListCurrentMonth: number[];
+    dayListNextMonth: number[];
+};

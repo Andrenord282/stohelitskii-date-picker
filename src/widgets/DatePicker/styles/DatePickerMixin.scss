@@ -1,0 +1,10 @@
+@mixin btnState($primary-color: #333, $secondary-color, $duration, $timing, $delay) {
+    color: $primary-color;
+    transition: all $duration $timing $delay;
+
+    @media (hover: hover) {
+        &:hover {
+            color: $secondary-color;
+        }
+    } 
+}
