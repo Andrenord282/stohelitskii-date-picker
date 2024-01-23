@@ -6,6 +6,7 @@ type DatePickerContextValue = {
     weekList: string[];
     currentDate: DateData;
     navigationDate: DateData;
+    dayList: DayList;
     updateNavigationDate: (key: updateDateKeyName, operation: updateDateOperation) => void;
 };
 
@@ -65,6 +66,7 @@ const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
         weekList,
         currentDate,
         navigationDate,
+        dayList,
         updateNavigationDate,
     };
 

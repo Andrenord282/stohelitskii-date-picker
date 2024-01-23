@@ -1,11 +1,12 @@
 .date-picker-weeklist {
-    display: flex;
-    align-items: center;
-    gap: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
 }
 
 .date-picker-weeklist__item {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 5px;
+    font-size: var(--date-picker-text-l-size);
 }

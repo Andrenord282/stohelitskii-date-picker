@@ -11,7 +11,8 @@ const initDayList = (dateData: DateData): DayList => {
     const lastWeekDayOfCurrentMonth =
         new Date(year, month + 1, 0).getDay() === 0 ? 6 : new Date(year, month + 1, 0).getDay();
     const amountDayOfPrevMonth = firstWeekDayOfCurrentMonth - 1;
-    const dayListOfNextMonthLength = AMOUNT_DAY_IN_WEEK - lastWeekDayOfCurrentMonth;
+    const dayListOfNextMonthLength =
+        lastWeekDayOfCurrentMonth === 6 ? 0 : AMOUNT_DAY_IN_WEEK - lastWeekDayOfCurrentMonth;
     const dayListPrevMonth = [];
     const dayListCurrentMonth = [];
     const dayListNextMonth = [];
@@ -24,6 +25,7 @@ const initDayList = (dateData: DateData): DayList => {
         dayListCurrentMonth.push(index);
     }
 
+    console.log(dayListOfNextMonthLength, lastWeekDayOfCurrentMonth);
     for (let index = 1; index <= dayListOfNextMonthLength; index++) {
         dayListNextMonth.push(index);
     }
@@ -31,7 +33,7 @@ const initDayList = (dateData: DateData): DayList => {
     return {
         dayListPrevMonth: dayListPrevMonth.reverse(),
         dayListCurrentMonth,
-        dayListNextMonth: dayListNextMonth.reverse(),
+        dayListNextMonth,
     };
 };
 

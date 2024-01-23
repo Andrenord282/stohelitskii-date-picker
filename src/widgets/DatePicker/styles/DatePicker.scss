@@ -3,6 +3,10 @@
     background-color: var(--date-picker-primary-bg-color);
     color: var(--date-picker-primary-color);
     font-size: var(--date-picker-primary-text-start-em);
+
+    & button {
+        cursor: pointer;
+    }
 }
 
 .date-picker__input {

@@ -1,7 +1,7 @@
 import { DateOptions, DateData } from '../../types';
 
 const initDate = (options: DateOptions): DateData => {
-    const { location, weekday, ...formatterOptions } = options;
+    const { location, day, weekday, ...formatterOptions } = options;
     const date = new Date();
     const formatter = new Intl.DateTimeFormat(location, formatterOptions);
 

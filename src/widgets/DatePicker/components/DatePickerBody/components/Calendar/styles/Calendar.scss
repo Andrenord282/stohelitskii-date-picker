@@ -1,0 +1,54 @@
+.date-picker-calendar {
+    padding: 5px 10px 10px 10px;
+}
+
+.date-picker-calendar__week-list {
+    margin-bottom: 5px;
+}
+
+.date-picker-calendar__day-list {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px 0;
+}
+
+.date-picker-calendar__prev-month-day-btn,
+.date-picker-calendar__current-month-day-btn,
+.date-picker-calendar__next-month-day-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 14%;
+    padding: 5px 15px;
+    color: var(--date-picker-tertiary-color);
+    font-size: var(--date-picker-text-l-size);
+    border: 1px solid transparent;
+    transition: all 0.2s linear;
+
+    @media (hover: hover) {
+        &:hover {
+            border-bottom: 1px solid var(--date-picker-secondary-color);
+        }
+    }
+}
+
+.date-picker-calendar__prev-month-day-btn,
+.date-picker-calendar__next-month-day-btn {
+    background-color: var(--date-picker-secondary-bg-color);
+    opacity: 0.4;
+}
+
+.date-picker-calendar__current-month-day-btn {
+    background-color: var(--date-picker-primary-bg-color);
+
+    &.current-day {
+        border: 1px solid var(--date-picker-primary-color);
+        border-radius: 10px;
+
+        @media (hover: hover) {
+            &:hover {
+                border: 1px solid var(--date-picker-secondary-color);
+            }
+        }
+    }
+}
