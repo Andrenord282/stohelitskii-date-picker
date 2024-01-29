@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useDatePickerState } from './hooks/useDateInputState';
+import { useEventOutside } from './hooks/useEventOutside';
 import { useSetStyleInDatePicker } from './hooks/useSetStyleInDatePicker';
 import { DatePickerContextProvider } from './state/useDatePickerContext';
 import { DateInput } from './components/DateInput';
@@ -13,6 +14,7 @@ import './styles/DatePicker.scss';
 type DatePickerTheme = 'dark' | 'light';
 
 type DatePickerProps = {
+    autoOpen: boolean;
     label: string;
     placeholder: string;
     theme?: DatePickerTheme;
@@ -21,22 +23,29 @@ type DatePickerProps = {
 };
 
 const DatePicker = (props: DatePickerProps) => {
-    const { label, placeholder, optionData, styleOptions, theme = 'dark' } = props;
+    const { autoOpen, label, placeholder, optionData, styleOptions, theme = 'dark' } = props;
+    
     const datePickerRef = useRef(null);
+    const { datePickerToggle, onClickToggleDatePickerBody } = useDatePickerState();
+
     useSetStyleInDatePicker({ datePickerRef, styleOptions });
 
-    const { datePickerBodyToggle, onClickToggleDatePickerBody } = useDatePickerState();
+    useEventOutside(datePickerRef, () => {
+        onClickToggleDatePickerBody(false);
+    });
 
     return (
         <DatePickerContextProvider option={optionData}>
             <div ref={datePickerRef} className={`date-picker date-picker_${theme}`}>
                 <DateInput
+                    autoOpen={autoOpen}
+                    datePickerToggle={datePickerToggle}
                     onClickToggleDatePickerBody={onClickToggleDatePickerBody}
                     label={label}
                     placeholder={placeholder}
                     className="date-picker__input"
                 />
-                {true && <DatePickerBody className="date-picker__body" />}
+                {datePickerToggle && <DatePickerBody className="date-picker__body" />}
             </div>
         </DatePickerContextProvider>
     );

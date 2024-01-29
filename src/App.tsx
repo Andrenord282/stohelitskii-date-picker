@@ -24,7 +24,7 @@ const App = () => {
                 backgroundColor: 'rgb(112, 191, 117)',
             }}
         >
-            <DatePicker label="Введите дату" placeholder="dd/mm/yyyy" optionData={option} />
+            <DatePicker label="Введите дату" placeholder="dd/mm/yyyy" autoOpen={true} optionData={option} />
         </div>
     );
 };

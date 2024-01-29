@@ -1,19 +1,19 @@
 import { useState } from 'react';
 
 type DatePickerState = {
-    datePickerBodyToggle: boolean;
-    onClickToggleDatePickerBody: () => void;
+    datePickerToggle: boolean;
+    onClickToggleDatePickerBody: (force?: boolean) => void;
 };
 
 const useDatePickerState = (): DatePickerState => {
-    const [datePickerBodyToggle, setDatePickerBodyToggle] = useState(false);
+    const [datePickerToggle, setDatePickerToggle] = useState(false);
 
-    const onClickToggleDatePickerBody = () => {
-        setDatePickerBodyToggle((prevToggle) => !prevToggle);
+    const onClickToggleDatePickerBody = (force?: boolean) => {
+        setDatePickerToggle((prevToggle) => (force ? force : !prevToggle));
     };
 
     return {
-        datePickerBodyToggle,
+        datePickerToggle,
         onClickToggleDatePickerBody,
     };
 };
