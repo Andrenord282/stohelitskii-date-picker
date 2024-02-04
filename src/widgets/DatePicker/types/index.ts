@@ -31,7 +31,7 @@ export type DateData = {
 };
 
 export type DayList = {
-    dayListPrevMonth: number[];
-    dayListCurrentMonth: number[];
-    dayListNextMonth: number[];
+    dayListPrevMonth: { id: string; value: number }[];
+    dayListCurrentMonth: { id: string; value: number }[];
+    dayListNextMonth: { id: string; value: number }[];
 };

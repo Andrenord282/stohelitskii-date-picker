@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { DateData, DayList } from '../../types';
 
 const initDayList = (dateData: DateData): DayList => {
@@ -17,17 +18,16 @@ const initDayList = (dateData: DateData): DayList => {
     const dayListCurrentMonth = [];
     const dayListNextMonth = [];
 
-    for (let index = 0, day = lastDayOfPrevMonth; index <= amountDayOfPrevMonth; day--, index++) {
-        dayListPrevMonth.push(day);
+    for (let currentDay = lastDayOfPrevMonth; lastDayOfPrevMonth - amountDayOfPrevMonth <= currentDay; currentDay--) {
+        dayListPrevMonth.push({ id: nanoid(5), value: currentDay });
     }
 
-    for (let index = firstDayOfCurrentMonth; index <= lastDayOfCurrentMonth; index++) {
-        dayListCurrentMonth.push(index);
+    for (let currentDay = firstDayOfCurrentMonth; currentDay <= lastDayOfCurrentMonth; currentDay++) {
+        dayListCurrentMonth.push({ id: nanoid(5), value: currentDay });
     }
 
-    console.log(dayListOfNextMonthLength, lastWeekDayOfCurrentMonth);
-    for (let index = 1; index <= dayListOfNextMonthLength; index++) {
-        dayListNextMonth.push(index);
+    for (let currentDay = 1; currentDay <= dayListOfNextMonthLength; currentDay++) {
+        dayListNextMonth.push({ id: nanoid(5), value: currentDay });
     }
 
     return {

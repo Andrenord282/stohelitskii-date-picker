@@ -17,26 +17,38 @@ const Calendar = (props: CalendarProps) => {
             <div className="date-picker-calendar__day-list">
                 {dayList.dayListPrevMonth &&
                     dayList.dayListPrevMonth.length > 0 &&
-                    dayList.dayListPrevMonth.map((day) => {
-                        return <button className="date-picker-calendar__prev-month-day-btn">{day}</button>;
+                    dayList.dayListPrevMonth.map((item) => {
+                        const { id, value } = item;
+                        return (
+                            <button key={id} className="date-picker-calendar__prev-month-day-btn">
+                                {value}
+                            </button>
+                        );
                     })}
                 {dayList.dayListCurrentMonth &&
                     dayList.dayListCurrentMonth.length > 0 &&
-                    dayList.dayListCurrentMonth.map((day) => {
+                    dayList.dayListCurrentMonth.map((item) => {
+                        const { id, value } = item;
                         return (
                             <button
+                                key={id}
                                 className={classNames('date-picker-calendar__current-month-day-btn', {
-                                    'current-day': day === currentDate.day,
+                                    'current-day': value === currentDate.day,
                                 })}
                             >
-                                {day}
+                                {value}
                             </button>
                         );
                     })}
                 {dayList.dayListNextMonth &&
                     dayList.dayListNextMonth.length > 0 &&
-                    dayList.dayListNextMonth.map((day) => {
-                        return <button className="date-picker-calendar__next-month-day-btn">{day}</button>;
+                    dayList.dayListNextMonth.map((item) => {
+                        const { id, value } = item;
+                        return (
+                            <button key={id} className="date-picker-calendar__next-month-day-btn">
+                                {value}
+                            </button>
+                        );
                     })}
             </div>
         </div>

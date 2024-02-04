@@ -24,7 +24,7 @@ type DatePickerProps = {
 
 const DatePicker = (props: DatePickerProps) => {
     const { autoOpen, label, placeholder, optionData, styleOptions, theme = 'dark' } = props;
-    
+
     const datePickerRef = useRef(null);
     const { datePickerToggle, onClickToggleDatePickerBody } = useDatePickerState();
 

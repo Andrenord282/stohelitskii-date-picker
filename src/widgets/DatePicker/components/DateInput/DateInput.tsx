@@ -9,23 +9,26 @@ type DateInputPorps = {
     label: string;
     placeholder: string;
     className: string;
-    onClickToggleDatePickerBody: () => void;
+    onClickToggleDatePickerBody: (state: boolean) => void;
 };
 
 const DateInput = (props: DateInputPorps) => {
     const { className, autoOpen, datePickerToggle, placeholder, onClickToggleDatePickerBody } = props;
 
     const handleOnFocus = () => {
-        if (!autoOpen || datePickerToggle) {
+        if (!autoOpen) {
             return;
         }
-        
-        onClickToggleDatePickerBody();
+
+        onClickToggleDatePickerBody(true);
     };
 
     const handleOnClickToggleBtn = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onClickToggleDatePickerBody();
+        if (!datePickerToggle) {
+            onClickToggleDatePickerBody(true);
+        } else {
+            onClickToggleDatePickerBody(false);
+        }
     };
 
     return (
