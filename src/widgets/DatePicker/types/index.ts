@@ -22,16 +22,38 @@ export type DateOptions = {
     firstWeekDay: 'sunday' | 'monday';
 };
 
+export type FormatterData = Intl.DateTimeFormat;
+
 export type DateData = {
-    year: number;
-    month: number;
-    day: number;
-    text: string;
+    timestamp: number | null;
+    year: number | null;
+    month: number | null;
+    day: number | null;
+    text: string | null;
+    formatter: Intl.DateTimeFormat | null;
+};
+
+export type NavigationDateData = {
+    timestamp: number | null;
+    year: number | null;
+    month: number | null;
+    text: string | null;
     formatter: Intl.DateTimeFormat;
 };
+
+export type UpdateDateOperation = 'inc' | 'dec' | 'skip';
+export type UpdateDateKeyName = 'year' | 'month' | 'day';
 
 export type DayList = {
     dayListPrevMonth: { id: string; value: number }[];
     dayListCurrentMonth: { id: string; value: number }[];
     dayListNextMonth: { id: string; value: number }[];
+};
+
+export type UpdateSelectedDateOption = {
+    e: React.MouseEvent;
+    formatter: Intl.DateTimeFormat;
+    navigationDate: NavigationDateData;
+    updateSelectedDate: (dateData: DateData) => void;
+    onClickToggleDatePickerBody: (state: boolean) => void;
 };

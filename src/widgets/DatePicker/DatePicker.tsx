@@ -45,7 +45,12 @@ const DatePicker = (props: DatePickerProps) => {
                     placeholder={placeholder}
                     className="date-picker__input"
                 />
-                {datePickerToggle && <DatePickerBody className="date-picker__body" />}
+                {datePickerToggle && (
+                    <DatePickerBody
+                        onClickToggleDatePickerBody={onClickToggleDatePickerBody}
+                        className="date-picker__body"
+                    />
+                )}
             </div>
         </DatePickerContextProvider>
     );

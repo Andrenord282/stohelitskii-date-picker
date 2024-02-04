@@ -1,13 +1,26 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
-import { DateOptions, DateData, DayList } from '../types';
-import { initDate, initWeekList, initDayList } from './utilities';
+import {
+    Location,
+    FormatterData,
+    DateOptions,
+    DateData,
+    UpdateDateOperation,
+    UpdateDateKeyName,
+    DayList,
+    NavigationDateData,
+} from '../types';
+import { initFormatter, initDate, initNavigationDate, initWeekList, initDayList } from './utilities';
 
 type DatePickerContextValue = {
+    location: Location;
     weekList: string[];
     currentDate: DateData;
-    navigationDate: DateData;
+    navigationDate: NavigationDateData;
+    selectedDate: DateData;
     dayList: DayList;
-    updateNavigationDate: (key: updateDateKeyName, operation: updateDateOperation) => void;
+    formatter: Intl.DateTimeFormat;
+    updateNavigationDate: (key: UpdateDateKeyName, operation: UpdateDateOperation) => void;
+    updateSelectedDate: (selectedDate: DateData) => void;
 };
 
 type DatePickerContextProviderProps = {
@@ -15,15 +28,15 @@ type DatePickerContextProviderProps = {
     option: DateOptions;
 };
 
-type updateDateOperation = 'inc' | 'dec';
-type updateDateKeyName = 'year' | 'month' | 'day';
-
 const DatePickerContext = createContext<DatePickerContextValue | null>(null);
 
 const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
     const { children, option } = props;
-    const [currentDate, setCurrentDate] = useState<DateData>(initDate(option));
-    const [navigationDate, setNavigationDate] = useState<DateData>(initDate(option));
+    const [location, setLocation] = useState<Location>(option.location);
+    const [formatter, setFormatter] = useState<FormatterData>(initFormatter(option));
+    const [currentDate, setCurrentDate] = useState<DateData>(initDate(option, 'currentDate'));
+    const [navigationDate, setNavigationDate] = useState<NavigationDateData>(initNavigationDate(option));
+    const [selectedDate, setSelectedDate] = useState<DateData>(initDate(option, 'selectedDate'));
     const [weekList, setWeekList] = useState<string[]>(initWeekList(option));
     const [dayList, setDayList] = useState<DayList>(initDayList(currentDate));
 
@@ -32,42 +45,47 @@ const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
         setDayList(newDayList);
     };
 
-    const updateNavigationDate = (key: updateDateKeyName, operation: updateDateOperation): void => {
+    const updateNavigationDate = (key: UpdateDateKeyName, operation: UpdateDateOperation): void => {
         setNavigationDate((prevDate) => {
             const year = prevDate.year;
             const month = prevDate.month;
-            const day = prevDate.day;
             const formatter = prevDate.formatter;
             let newDate = {};
 
             switch (true) {
+                case (key === 'month' && operation === 'skip') || (key === 'year' && operation === 'skip'):
+                    newDate = {
+                        ...prevDate,
+                    };
                 case key === 'year' && operation === 'inc':
-                    newDate = { ...prevDate, year: year + 1, text: formatter.format(new Date(year + 1, month, day)) };
+                    newDate = { ...prevDate, year: year + 1, text: formatter.format(new Date(year + 1, month)) };
                     break;
                 case key === 'year' && operation === 'dec':
-                    newDate = { ...prevDate, year: year - 1, text: formatter.format(new Date(year - 1, month, day)) };
+                    newDate = { ...prevDate, year: year - 1, text: formatter.format(new Date(year - 1, month)) };
+                    break;
+
                     break;
                 case key === 'month' && operation === 'inc' && month === 11:
                     newDate = {
                         ...prevDate,
                         month: 0,
                         year: year + 1,
-                        text: formatter.format(new Date(year + 1, 0, day)),
+                        text: formatter.format(new Date(year + 1, 0)),
                     };
                     break;
                 case key === 'month' && operation === 'inc':
-                    newDate = { ...prevDate, month: month + 1, text: formatter.format(new Date(year, month + 1, day)) };
+                    newDate = { ...prevDate, month: month + 1, text: formatter.format(new Date(year, month + 1)) };
                     break;
                 case key === 'month' && operation === 'dec' && month === 0:
                     newDate = {
                         ...prevDate,
                         month: 11,
                         year: year - 1,
-                        text: formatter.format(new Date(year - 1, 11, day)),
+                        text: formatter.format(new Date(year - 1, 11)),
                     };
                     break;
                 case key === 'month' && operation === 'dec':
-                    newDate = { ...prevDate, month: month - 1, text: formatter.format(new Date(year, month - 1, day)) };
+                    newDate = { ...prevDate, month: month - 1, text: formatter.format(new Date(year, month - 1)) };
                     break;
                 default:
                     return prevDate;
@@ -78,12 +96,29 @@ const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
         });
     };
 
+    const updateSelectedDate = (selectedDate: DateData) => {
+        setSelectedDate((prevDate) => {
+            const newDate = {
+                ...prevDate,
+                ...selectedDate,
+            };
+            udateDayList(newDate);
+            setNavigationDate(newDate);
+
+            return newDate;
+        });
+    };
+
     const dataPickerContextValue: DatePickerContextValue = {
+        location,
+        formatter,
         weekList,
         currentDate,
         navigationDate,
+        selectedDate,
         dayList,
         updateNavigationDate,
+        updateSelectedDate,
     };
 
     return <DatePickerContext.Provider value={dataPickerContextValue}>{children}</DatePickerContext.Provider>;

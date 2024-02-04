@@ -4,15 +4,19 @@ import { Calendar } from './components/Calendar';
 
 type DatePickerBodyProps = {
     className: string;
+    onClickToggleDatePickerBody: (state: boolean) => void;
 };
 
 const DatePickerBody = (props: DatePickerBodyProps) => {
-    const { className } = props;
+    const { className, onClickToggleDatePickerBody } = props;
 
     return (
         <div className={classNames(className, 'date-picker-body')}>
             <NavigationBar className="date-picker-body__nav-bar" />
-            <Calendar className="date-picker-body__calendar" />
+            <Calendar
+                onClickToggleDatePickerBody={onClickToggleDatePickerBody}
+                className="date-picker-body__calendar"
+            />
         </div>
     );
 };
