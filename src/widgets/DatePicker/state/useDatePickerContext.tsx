@@ -47,8 +47,24 @@ const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
                 case key === 'year' && operation === 'dec':
                     newDate = { ...prevDate, year: year - 1, text: formatter.format(new Date(year - 1, month, day)) };
                     break;
+                case key === 'month' && operation === 'inc' && month === 11:
+                    newDate = {
+                        ...prevDate,
+                        month: 0,
+                        year: year + 1,
+                        text: formatter.format(new Date(year + 1, 0, day)),
+                    };
+                    break;
                 case key === 'month' && operation === 'inc':
                     newDate = { ...prevDate, month: month + 1, text: formatter.format(new Date(year, month + 1, day)) };
+                    break;
+                case key === 'month' && operation === 'dec' && month === 0:
+                    newDate = {
+                        ...prevDate,
+                        month: 11,
+                        year: year - 1,
+                        text: formatter.format(new Date(year - 1, 11, day)),
+                    };
                     break;
                 case key === 'month' && operation === 'dec':
                     newDate = { ...prevDate, month: month - 1, text: formatter.format(new Date(year, month - 1, day)) };

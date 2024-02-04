@@ -9,7 +9,7 @@ type CalendarProps = {
 
 const Calendar = (props: CalendarProps) => {
     const { className } = props;
-    const { dayList, currentDate } = useDatePickerContext();
+    const { dayList, currentDate, navigationDate } = useDatePickerContext();
 
     return (
         <div className={classNames(className, 'date-picker-calendar')}>
@@ -33,7 +33,10 @@ const Calendar = (props: CalendarProps) => {
                             <button
                                 key={id}
                                 className={classNames('date-picker-calendar__current-month-day-btn', {
-                                    'current-day': value === currentDate.day,
+                                    'current-day':
+                                        value === currentDate.day &&
+                                        currentDate.month === navigationDate.month &&
+                                        currentDate.year === navigationDate.year,
                                 })}
                             >
                                 {value}
