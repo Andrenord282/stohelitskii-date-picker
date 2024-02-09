@@ -1,4 +1,4 @@
-export type styleOptions = {
+export type StyleOptions = {
     ['text-xl-size']?: string;
     ['text-l-size']?: string;
     ['text-m-size']?: string;
@@ -12,17 +12,17 @@ export type styleOptions = {
 };
 
 export type Location = 'ru-RU' | 'es-ES' | 'en-EN';
-
+export type FirstWeekDay = 'sunday' | 'monday';
 export type DateOptions = {
     location: Location;
-    day: 'numeric' | '2-digit';
-    month: 'numeric' | '2-digit' | 'long' | 'short';
-    year: 'numeric' | '2-digit';
-    weekday: 'long' | 'short' | 'narrow';
-    firstWeekDay: 'sunday' | 'monday';
+    firstWeekDay: FirstWeekDay;
 };
-
-export type FormatterData = Intl.DateTimeFormat;
+export type FormatOption = {
+    day?: 'numeric' | '2-digit' | null;
+    month?: 'numeric' | '2-digit' | 'long' | 'short' | null;
+    year?: 'numeric' | '2-digit' | null;
+    weekday?: 'long' | 'short' | 'narrow' | null;
+};
 
 export type DateData = {
     timestamp: number | null;
@@ -52,8 +52,7 @@ export type DayList = {
 
 export type UpdateSelectedDateOption = {
     e: React.MouseEvent;
-    formatter: Intl.DateTimeFormat;
     navigationDate: NavigationDateData;
-    updateSelectedDate: (dateData: DateData) => void;
+    updateSelectedDate: (selectedDate: Date) => void;
     onClickToggleDatePickerBody: (state: boolean) => void;
 };

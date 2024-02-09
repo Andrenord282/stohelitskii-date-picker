@@ -5,7 +5,7 @@ import { useSetStyleInDatePicker } from './hooks/useSetStyleInDatePicker';
 import { DatePickerContextProvider } from './state/useDatePickerContext';
 import { DateInput } from './components/DateInput';
 import { DatePickerBody } from './components/DatePickerBody';
-import { DateOptions, styleOptions } from './types';
+import { StyleOptions, Location, FirstWeekDay } from './types';
 
 import './styles/DatePickerVar.scss';
 import './styles/DatePickerMixin.scss';
@@ -18,24 +18,33 @@ type DatePickerProps = {
     label: string;
     placeholder: string;
     theme?: DatePickerTheme;
-    styleOptions?: styleOptions;
-    optionData: DateOptions;
+    StyleOptions?: StyleOptions;
+    location: Location;
+    firstWeekDay: FirstWeekDay;
 };
 
 const DatePicker = (props: DatePickerProps) => {
-    const { autoOpen, label, placeholder, optionData, styleOptions, theme = 'dark' } = props;
+    const {
+        autoOpen,
+        label,
+        placeholder,
+        location,
+        firstWeekDay,
+        StyleOptions,
+        theme = 'dark',
+    } = props;
 
     const datePickerRef = useRef(null);
     const { datePickerToggle, onClickToggleDatePickerBody } = useDatePickerState();
 
-    useSetStyleInDatePicker({ datePickerRef, styleOptions });
+    useSetStyleInDatePicker({ datePickerRef, StyleOptions });
 
     useEventOutside(datePickerRef, () => {
         onClickToggleDatePickerBody(false);
     });
 
     return (
-        <DatePickerContextProvider option={optionData}>
+        <DatePickerContextProvider option={{ location, firstWeekDay }}>
             <div ref={datePickerRef} className={`date-picker date-picker_${theme}`}>
                 <DateInput
                     autoOpen={autoOpen}

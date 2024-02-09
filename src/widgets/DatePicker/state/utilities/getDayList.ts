@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
-import { DateData, DayList } from '../../types';
+import { NavigationDateData, DayList } from '../../types';
 
-const initDayList = (dateData: DateData): DayList => {
+const getDayList = (dateData: NavigationDateData): DayList => {
     const { year, month } = dateData;
     const AMOUNT_DAY_IN_WEEK = 7;
     const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
@@ -37,4 +37,4 @@ const initDayList = (dateData: DateData): DayList => {
     };
 };
 
-export { initDayList };
+export { getDayList };

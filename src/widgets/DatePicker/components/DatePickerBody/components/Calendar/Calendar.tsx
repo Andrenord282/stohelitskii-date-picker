@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { UpdateDateOperation, UpdateDateKeyName, UpdateSelectedDateOption } from '../../../../types';
+import { UpdateSelectedDateOption } from '../../../../types';
 import { useDatePickerContext } from '../../../../state/useDatePickerContext';
 import { useUpdateSelectedDate } from './hooks/useUpdateSelectedDate';
 import { WeekList } from '../WeekList';
@@ -12,7 +12,7 @@ type CalendarProps = {
 
 const Calendar = (props: CalendarProps) => {
     const { className, onClickToggleDatePickerBody } = props;
-    const { formatter, dayList, currentDate, navigationDate, updateSelectedDate } = useDatePickerContext();
+    const { location, dayList, currentDate, navigationDate, updateSelectedDate } = useDatePickerContext();
     const handleUpdateSelectedDate = useUpdateSelectedDate();
 
     return (
@@ -29,7 +29,6 @@ const Calendar = (props: CalendarProps) => {
                                 onClick={(e: React.MouseEvent) => {
                                     const option: UpdateSelectedDateOption = {
                                         e,
-                                        formatter,
                                         navigationDate,
                                         updateSelectedDate,
                                         onClickToggleDatePickerBody,
@@ -54,7 +53,6 @@ const Calendar = (props: CalendarProps) => {
                                 onClick={(e: React.MouseEvent) => {
                                     const option: UpdateSelectedDateOption = {
                                         e,
-                                        formatter,
                                         navigationDate,
                                         updateSelectedDate,
                                         onClickToggleDatePickerBody,
@@ -83,12 +81,11 @@ const Calendar = (props: CalendarProps) => {
                                 onClick={(e: React.MouseEvent) => {
                                     const option: UpdateSelectedDateOption = {
                                         e,
-                                        formatter,
                                         navigationDate,
                                         updateSelectedDate,
                                         onClickToggleDatePickerBody,
                                     };
-                                    
+
                                     handleUpdateSelectedDate(option);
                                 }}
                                 data-month-type="next-month"

@@ -1,8 +1,8 @@
 import { DateOptions } from '../../types';
 
 const initFormatter = (options: DateOptions) => {
-    const { location, weekday, day, ...formatterOptions } = options;
-    return new Intl.DateTimeFormat(location, formatterOptions);
+    const { location } = options;
+    return new Intl.DateTimeFormat(location);
 };
 
 export { initFormatter };

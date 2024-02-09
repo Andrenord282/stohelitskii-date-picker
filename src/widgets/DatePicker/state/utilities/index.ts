@@ -1,5 +1,5 @@
 export { initFormatter } from './initFormatter';
-export { initDate } from './initDate';
-export { initNavigationDate } from './initNavigationDate';
+export { initDateData } from './initDateData';
 export { initWeekList } from './initWeekList';
-export { initDayList } from './initDayList';
+export { getDayList } from './getDayList';
+export { getDateData } from './getDateData';

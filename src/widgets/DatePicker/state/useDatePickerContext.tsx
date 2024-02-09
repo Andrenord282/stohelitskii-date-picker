@@ -1,15 +1,15 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 import {
     Location,
-    FormatterData,
-    DateOptions,
     DateData,
     UpdateDateOperation,
     UpdateDateKeyName,
     DayList,
     NavigationDateData,
+    FirstWeekDay,
+    FormatOption,
 } from '../types';
-import { initFormatter, initDate, initNavigationDate, initWeekList, initDayList } from './utilities';
+import { initDateData, initWeekList, getDayList, getDateData } from './utilities';
 
 type DatePickerContextValue = {
     location: Location;
@@ -18,14 +18,16 @@ type DatePickerContextValue = {
     navigationDate: NavigationDateData;
     selectedDate: DateData;
     dayList: DayList;
-    formatter: Intl.DateTimeFormat;
     updateNavigationDate: (key: UpdateDateKeyName, operation: UpdateDateOperation) => void;
-    updateSelectedDate: (selectedDate: DateData) => void;
+    updateSelectedDate: (selectedDate: Date) => void;
 };
 
 type DatePickerContextProviderProps = {
     children: ReactNode;
-    option: DateOptions;
+    option: {
+        location: Location;
+        firstWeekDay: FirstWeekDay;
+    };
 };
 
 const DatePickerContext = createContext<DatePickerContextValue | null>(null);
@@ -33,85 +35,102 @@ const DatePickerContext = createContext<DatePickerContextValue | null>(null);
 const DatePickerContextProvider = (props: DatePickerContextProviderProps) => {
     const { children, option } = props;
     const [location, setLocation] = useState<Location>(option.location);
-    const [formatter, setFormatter] = useState<FormatterData>(initFormatter(option));
-    const [currentDate, setCurrentDate] = useState<DateData>(initDate(option, 'currentDate'));
-    const [navigationDate, setNavigationDate] = useState<NavigationDateData>(initNavigationDate(option));
-    const [selectedDate, setSelectedDate] = useState<DateData>(initDate(option, 'selectedDate'));
+    const [currentDate, setCurrentDate] = useState<DateData>(initDateData(option, 'currentDate'));
+    const [navigationDate, setNavigationDate] = useState<DateData>(initDateData(option, 'navigateName'));
+    const [selectedDate, setSelectedDate] = useState<DateData>(initDateData(option, 'selectedDate'));
     const [weekList, setWeekList] = useState<string[]>(initWeekList(option));
-    const [dayList, setDayList] = useState<DayList>(initDayList(currentDate));
+    const [dayList, setDayList] = useState<DayList>(getDayList(currentDate));
 
-    const udateDayList = (newDate: DateData) => {
-        const newDayList = initDayList(newDate);
+    const udateDayList = (newDateData: NavigationDateData) => {
+        const newDayList = getDayList(newDateData);
         setDayList(newDayList);
     };
 
     const updateNavigationDate = (key: UpdateDateKeyName, operation: UpdateDateOperation): void => {
-        setNavigationDate((prevDate) => {
-            const year = prevDate.year;
-            const month = prevDate.month;
-            const formatter = prevDate.formatter;
-            let newDate = {};
+        setNavigationDate((prevDateData) => {
+            const { year, month } = prevDateData;
+            let newDateData = {};
+            const updateFormatOption: FormatOption = {
+                month: 'long',
+                day: null,
+            };
 
-            switch (true) {
-                case (key === 'month' && operation === 'skip') || (key === 'year' && operation === 'skip'):
-                    newDate = {
-                        ...prevDate,
-                    };
-                case key === 'year' && operation === 'inc':
-                    newDate = { ...prevDate, year: year + 1, text: formatter.format(new Date(year + 1, month)) };
-                    break;
-                case key === 'year' && operation === 'dec':
-                    newDate = { ...prevDate, year: year - 1, text: formatter.format(new Date(year - 1, month)) };
-                    break;
-
-                    break;
-                case key === 'month' && operation === 'inc' && month === 11:
-                    newDate = {
-                        ...prevDate,
-                        month: 0,
-                        year: year + 1,
-                        text: formatter.format(new Date(year + 1, 0)),
-                    };
-                    break;
-                case key === 'month' && operation === 'inc':
-                    newDate = { ...prevDate, month: month + 1, text: formatter.format(new Date(year, month + 1)) };
-                    break;
-                case key === 'month' && operation === 'dec' && month === 0:
-                    newDate = {
-                        ...prevDate,
-                        month: 11,
-                        year: year - 1,
-                        text: formatter.format(new Date(year - 1, 11)),
-                    };
-                    break;
-                case key === 'month' && operation === 'dec':
-                    newDate = { ...prevDate, month: month - 1, text: formatter.format(new Date(year, month - 1)) };
-                    break;
-                default:
-                    return prevDate;
+            if (key === 'month' && operation === 'skip') {
+                newDateData = {
+                    ...prevDateData,
+                };
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
             }
 
-            udateDayList(newDate as DateData);
-            return newDate as DateData;
+            if (key === 'year' && operation === 'skip') {
+                newDateData = {
+                    ...prevDateData,
+                };
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'year' && operation === 'inc') {
+                const newDate = new Date(year + 1, month);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'year' && operation === 'dec') {
+                const newDate = new Date(year - 1, month);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'month' && operation === 'inc' && month === 11) {
+                const newDate = new Date(year + 1, 0);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'month' && operation === 'inc') {
+                const newDate = new Date(year, month + 1);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'month' && operation === 'dec' && month === 0) {
+                const newDate = new Date(year - 1, 11);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
+
+            if (key === 'month' && operation === 'dec') {
+                const newDate = new Date(year, month - 1);
+                newDateData = getDateData(newDate, location, updateFormatOption);
+                udateDayList(newDateData as DateData);
+                return newDateData as DateData;
+            }
         });
     };
 
-    const updateSelectedDate = (selectedDate: DateData) => {
-        setSelectedDate((prevDate) => {
-            const newDate = {
-                ...prevDate,
-                ...selectedDate,
-            };
-            udateDayList(newDate);
-            setNavigationDate(newDate);
+    const updateSelectedDate = (selectedDate: Date) => {
+        setSelectedDate((prevDateData) => {
+            const newSelectedDate = getDateData(selectedDate, location);
+            const newNavigateDate = getDateData(selectedDate, location, {
+                month: 'long',
+                day: null,
+            });
 
-            return newDate;
+            udateDayList(newSelectedDate);
+            setNavigationDate(newNavigateDate);
+            return newSelectedDate;
         });
     };
 
     const dataPickerContextValue: DatePickerContextValue = {
         location,
-        formatter,
         weekList,
         currentDate,
         navigationDate,
